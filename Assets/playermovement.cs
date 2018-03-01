@@ -12,12 +12,17 @@ public class playermovement : MonoBehaviour {
 	public KeyCode leftKey = KeyCode.LeftArrow;
 	public float bottomOfScreen = -5;
 	public string sceneToSwitchToOnDeath = "GameOverScene";
+	public GameObject cheesePrefab;
+	private bool cheeseSpawned;
+	private bool cheeseDestroyed;
+	private GameObject activeCheese;
 
 
 	// Use this for initialization
 	void Start () {
 
 		spr = GetComponent<SpriteRenderer> ();
+		float randomNum = Random.Range (0, 5.5f);
 		
 	}
 	
@@ -43,6 +48,26 @@ public class playermovement : MonoBehaviour {
 		if (transform.position.x >= -1 && transform.position.x <= 1 && transform.position.y >= -1 && transform.position.y <= 1) {
 			SceneManager.LoadScene ("gameoverscene");
 		}
-			
+
+		}
+
+	void OnTriggerEnter2D(Collider2D other){
+		if (other.gameObject.tag == "circle") {
+			if (!cheeseSpawned) {
+				activeCheese = Instantiate (cheesePrefab);
+				activeCheese.transform.position = new Vector3 (5, -4, 0);
+				cheeseSpawned = true;
+			}
+		}
+
+	
+
+			if (other.gameObject.tag == "destroycircle") {
+				if (cheeseSpawned) {
+					Destroy (activeCheese);
+					cheeseSpawned = false;
+				}
+			}
 		}
 }
+
