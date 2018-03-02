@@ -6,6 +6,8 @@ TagManager:
   tags:
   - circle
   - destroycircle
+  - levelendcheese
+  - bonuscheese
   layers:
   - Default
   - TransparentFX

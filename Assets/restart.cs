@@ -12,7 +12,8 @@ public class restart : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.anyKeyDown) {
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			GameManager.score = 0;
 			SceneManager.LoadScene ("play");
 		}
 		

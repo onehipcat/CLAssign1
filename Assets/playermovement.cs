@@ -16,13 +16,15 @@ public class playermovement : MonoBehaviour {
 	private bool cheeseSpawned;
 	private bool cheeseDestroyed;
 	private GameObject activeCheese;
-
+	public int score;
 
 	// Use this for initialization
 	void Start () {
 
 		spr = GetComponent<SpriteRenderer> ();
 		float randomNum = Random.Range (0, 5.5f);
+
+		GameManager.readHIghScoreFromDisk ();
 		
 	}
 	
@@ -45,11 +47,11 @@ public class playermovement : MonoBehaviour {
 			transform.Translate (0, -moveSpeed, 0);
 			spr.flipY = false;
 		}
-		if (transform.position.x >= -1 && transform.position.x <= 1 && transform.position.y >= -1 && transform.position.y <= 1) {
-			SceneManager.LoadScene ("gameoverscene");
-		}
+		//if (transform.position.x >= -1 && transform.position.x <= 1 && transform.position.y >= -1 && transform.position.y <= 1) {
+			//SceneManager.LoadScene ("gameoverscene");
+		//}
 
-		}
+	}
 
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.gameObject.tag == "circle") {
@@ -62,12 +64,29 @@ public class playermovement : MonoBehaviour {
 
 	
 
-			if (other.gameObject.tag == "destroycircle") {
-				if (cheeseSpawned) {
-					Destroy (activeCheese);
-					cheeseSpawned = false;
-				}
+		if (other.gameObject.tag == "destroycircle") {
+			if (cheeseSpawned) {
+				Destroy (activeCheese);
+				cheeseSpawned = false;
 			}
 		}
+
+		if (other.gameObject.tag == "levelendcheese") {
+			//GameManager theManager = GameObject.Find ("Game Manager").GetComponent<GameManager> ();
+			GameManager.score += 1;
+			GameManager.maybeUpdateHighScore();
+			SceneManager.LoadScene ("gameoverscene");
+		}
+
+		if (other.gameObject.tag == "bonuscheese") {
+			Destroy (other.gameObject);
+			//GameManager theManager = GameObject.Find ("Game Manager").GetComponent<GameManager> ();
+			GameManager.score += 1;
+			score += 1;
+			cheeseSpawned = false;
+		}
+	}	
+
+
 }
 
